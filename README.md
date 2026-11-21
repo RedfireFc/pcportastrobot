@@ -186,3 +186,54 @@ the screen:
 
 Work in progress, personal use. Not affiliated with or endorsed by Sony Interactive Entertainment, Team ASOBI
 or NVIDIA. Astro Bot is a trademark of its owners; NVIDIA, DLSS and Reflex are trademarks of NVIDIA.
+
+
+
+REMOVE WHATS UNDER THIS WHEN YOU ACCEPT THE PULL REQUEST AND I DID NOT UPDATE IT TO 1.2.10 SO ITS 1.2.9 
+
+- CHANGELOG
+
+New: Stability Mode
+
+Graphics > Advanced Settings now includes Stability Mode, enabled by default.
+
+Stability Mode applies a set of conservative runtime settings intended to reduce random crashes, freezes and graphics synchronization problems:
+
+- Enables safer GPU barrier batching.
+- Disables dispatch overlap and draw-run optimizations.
+- Disables several experimental fast paths and drawing optimizations.
+- Enables command-buffer watermark monitoring.
+- Enables the Kyty and AstroHybrid hang watchdogs.
+- Applies a conservative graphics draw-slicing limit.
+- Preserves existing user path overlays ("APS5_PATH_OVERLAYS").
+
+These settings are applied automatically when Stability Mode is enabled. Turn it off to restore the normal runtime behavior.
+
+New: 24 MiB Command Buffer option
+
+Advanced Settings > Stability now includes an optional 24 MiB Command Buffer toggle.
+
+- Stability Mode must be enabled for this option to work.
+- Disabled by default.
+- Increases the command-buffer allocation from 16 MiB to 24 MiB when the expected executable pattern is found.
+- If the expected pattern is not found, the launcher skips the change instead of blindly modifying executable data.
+
+This provides additional command-buffer headroom for games that produce large graphics workloads.
+
+Stability and launcher changes
+
+The launcher applies the command-buffer changes before starting the game and activates the selected stability settings.
+
+The Stability Mode environment overrides are also applied by "Run-AstroHybrid.bat", while preserving existing path-overlay configuration.
+
+Known issues
+
+These changes are intended to improve stability, but they are not guaranteed fixes for every crash.
+
+The "lost device" error 321 is not confirmed fixed.
+
+Random freezes and graphics command-buffer exhaustion may still occur.
+
+The 24 MiB option only applies when the expected executable pattern is found.
+
+No Windows build verification or in-game testing was performed for these source changes, so performance and stability improvements still need testing.
